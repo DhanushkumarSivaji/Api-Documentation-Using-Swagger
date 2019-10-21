@@ -1,0 +1,126 @@
+swagger: '2.0'
+info:
+  description: Node.js Rest API doc
+  version: '1.0.0'
+  title: Node Rest API documentation
+  termsOfService: 'http://swagger.io/terms/'
+basePath: /api/
+schemes:
+- http
+paths:
+  /auth:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      parameters:
+        - in: body
+          name: body
+          description: Login Payload
+          required: true
+          schema:
+            $ref: '#/definitions/UserSignin'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Login Successfully
+          schema:
+            $ref: '#/definitions/ApiSignUpResponse'
+        '400':
+          description: Invalid Credentials
+        '500':
+          description: Internal Server Error
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: GetUserDetails
+      description: API for UserDetails
+      responses:
+        '200':
+          description: Got User Details Successfully
+          schema:
+            $ref: '#/definitions/UserDetailResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /users:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      parameters:
+        - in: body
+          name: body
+          description: Signup Payload
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Signup Successfully
+          schema:
+            $ref: '#/definitions/ApiSignUpResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: x-auth-token
+    in: header
+definitions:
+  User: 
+    properties:
+      name:
+        type: string
+        description: name of user
+      email:
+        type: string
+        description: email of user
+      password:
+        type: string
+        description: password of the user
+  UserSignin:
+    properties:
+      email:
+        type: string
+        description: email of user
+      password:
+        type: string
+        description: password of the user
+  ApiSignUpResponse:
+    type: object
+    properties:
+      token:
+        type: string
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+  UserDetailResponse:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      email:
+        type: string
+      date:
+        type: string
+      __v:
+        type: integer
